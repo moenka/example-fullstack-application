@@ -1,0 +1,20 @@
+---
+version: '3.4'
+
+services:
+
+  felb:
+    image: traefik
+    ports:
+      - '8000:80'
+      - '8080:8080'
+    volumes:
+      - './felb.toml:/etc/traefik/traefik.toml'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+  backend:
+    build:
+      context: ./backend
+    labels:
+      traefik.frontend.rule: 'Host:hello.docker.local'
+
